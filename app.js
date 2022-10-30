@@ -1,6 +1,7 @@
 const express = require("express");
 
 const app = express();
+app.use(express.json());
 
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
@@ -70,4 +71,33 @@ app.get("/states/:stateId/", async (req, res) => {
     };
   });
   res.send(...stateDetails);
+});
+
+//ADD District Details API
+app.post("/districts/", async (req, res) => {
+  const districtDetails = req.body;
+  const {
+    districtName,
+    stateId,
+    cases,
+    cured,
+    active,
+    deaths,
+  } = districtDetails;
+  const addDistrictDetailsQuery = `
+        INSERT INTO 
+          district(district_name, state_id, cases, cured, active, deaths)
+        VALUES (
+              '${districtName}',
+               ${stateId},
+               ${cases},
+               ${cured},
+               ${active},
+               ${deaths}
+        );
+    `;
+  const dbResponse = await db.run(addDistrictDetailsQuery);
+  const districtId = dbResponse.lastID;
+  res.send("District Successfully Added");
+  //console.log(districtId);
 });
