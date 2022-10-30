@@ -127,3 +127,17 @@ app.get("/districts/:districtId/", async (req, res) => {
   });
   res.send(...districtDetails);
 });
+
+//Delete district details API
+app.delete("/districts/:districtId/", async (req, res) => {
+  const { districtId } = req.params;
+  const deleteDistrictDetailsQuery = `
+        DELETE FROM 
+          district 
+        WHERE 
+          district_id = ${districtId};
+    `;
+
+  const dbResponse = await db.run(deleteDistrictDetailsQuery);
+  res.send("District Removed");
+});
