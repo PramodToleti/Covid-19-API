@@ -27,3 +27,24 @@ const initializeDBAndServer = async () => {
 };
 
 initializeDBAndServer();
+
+//Get List of States API
+app.get("/states/", async (req, res) => {
+  const getStatesQuery = `
+        SELECT 
+          * 
+        FROM 
+          state;
+    `;
+
+  const dbResponse = await db.all(getStatesQuery);
+
+  const stateDetails = dbResponse.map((obj) => {
+    return {
+      stateId: obj.state_id,
+      stateName: obj.state_name,
+      population: obj.population,
+    };
+  });
+  res.send(stateDetails);
+});
