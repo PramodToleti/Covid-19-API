@@ -201,3 +201,5 @@ app.get("/districts/:districtId/details/", async (req, res) => {
   const { state_name } = await db.get(getStateNameQuery);
   res.send({ stateName: state_name });
 });
+
+module.exports = app;
