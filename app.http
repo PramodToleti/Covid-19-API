@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/districts/763/
+GET http://localhost:3000/districts/300/
 
 ###
 
@@ -28,7 +28,7 @@ DELETE http://localhost:3000/districts/700/
 
 ###
 
-PUT http://localhost:3000/districts/760/
+PUT http://localhost:3000/districts/300/
 Content-Type: application/json
 
 {

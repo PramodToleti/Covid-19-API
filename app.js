@@ -120,6 +120,7 @@ app.get("/districts/:districtId/", async (req, res) => {
       districtId: obj.district_id,
       districtName: obj.district_name,
       stateId: obj.state_id,
+      cases: obj.cases,
       cured: obj.cured,
       active: obj.active,
       deaths: obj.deaths,
@@ -146,7 +147,14 @@ app.delete("/districts/:districtId/", async (req, res) => {
 app.put("/districts/:districtId/", async (req, res) => {
   const { districtId } = req.params;
   const districtDetails = req.body;
-  const { districtName, stateId, cured, active, deaths } = districtDetails;
+  const {
+    districtName,
+    stateId,
+    cases,
+    cured,
+    active,
+    deaths,
+  } = districtDetails;
 
   const updateDistrictDetailsQuery = `
         UPDATE 
@@ -154,6 +162,7 @@ app.put("/districts/:districtId/", async (req, res) => {
         SET 
           district_name = '${districtName}',
           state_id = ${stateId},
+          cases = ${cases},
           cured = ${cured},
           active = ${active},
           deaths = ${deaths}
@@ -173,7 +182,7 @@ app.get("/states/:stateId/stats/", async (req, res) => {
           SUM(district.cases) AS totalCases,
           SUM(district.cured) AS totalCured,
           SUM(district.active) AS totalActive,
-          SUM(district.deaths) AS totalDeath
+          SUM(district.deaths) AS totalDeaths
         FROM state
             INNER JOIN district
         ON state.state_id = district.state_id
