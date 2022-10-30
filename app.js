@@ -119,7 +119,7 @@ app.get("/districts/:districtId/", async (req, res) => {
     return {
       districtId: obj.district_id,
       districtName: obj.district_name,
-      stateId: obj.stateId,
+      stateId: obj.state_id,
       cured: obj.cured,
       active: obj.active,
       deaths: obj.deaths,
@@ -163,4 +163,24 @@ app.put("/districts/:districtId/", async (req, res) => {
 
   await db.run(updateDistrictDetailsQuery);
   res.send("District Details Updated");
+});
+
+//Get Statistics Details of a State API
+app.get("/states/:stateId/stats/", async (req, res) => {
+  const { stateId } = req.params;
+  const getStatsOfStateQuery = `
+        SELECT 
+          SUM(district.cases) AS totalCases,
+          SUM(district.cured) AS totalCured,
+          SUM(district.active) AS totalActive,
+          SUM(district.deaths) AS totalDeath
+        FROM state
+            INNER JOIN district
+        ON state.state_id = district.state_id
+        WHERE 
+          district.state_id = ${stateId}
+    `;
+
+  const statsDetails = await db.all(getStatsOfStateQuery);
+  res.send(...statsDetails);
 });

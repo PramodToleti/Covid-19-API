@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/districts/760/
+GET http://localhost:3000/districts/762/
 
 ###
 
@@ -39,5 +39,9 @@ Content-Type: application/json
   "active": 3000,
   "deaths": 104
 }
+
+###
+
+GET http://localhost:3000/states/5/stats/ 
 
 ###
