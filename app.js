@@ -101,3 +101,29 @@ app.post("/districts/", async (req, res) => {
   res.send("District Successfully Added");
   //console.log(districtId);
 });
+
+//Get District Details API
+app.get("/districts/:districtId/", async (req, res) => {
+  const { districtId } = req.params;
+  const getDistrictDetailsQuery = `
+        SELECT 
+          * 
+        FROM 
+          district
+        WHERE 
+          district_id = ${districtId};
+    `;
+
+  const dbResponse = await db.get(getDistrictDetailsQuery);
+  const districtDetails = [dbResponse].map((obj) => {
+    return {
+      districtId: obj.district_id,
+      districtName: obj.district_name,
+      stateId: obj.stateId,
+      cured: obj.cured,
+      active: obj.active,
+      deaths: obj.deaths,
+    };
+  });
+  res.send(...districtDetails);
+});
