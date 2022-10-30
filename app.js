@@ -141,3 +141,26 @@ app.delete("/districts/:districtId/", async (req, res) => {
   const dbResponse = await db.run(deleteDistrictDetailsQuery);
   res.send("District Removed");
 });
+
+//Update District Details API
+app.put("/districts/:districtId/", async (req, res) => {
+  const { districtId } = req.params;
+  const districtDetails = req.body;
+  const { districtName, stateId, cured, active, deaths } = districtDetails;
+
+  const updateDistrictDetailsQuery = `
+        UPDATE 
+          district
+        SET 
+          district_name = '${districtName}',
+          state_id = ${stateId},
+          cured = ${cured},
+          active = ${active},
+          deaths = ${deaths}
+        WHERE 
+          district_id = ${districtId};
+    `;
+
+  await db.run(updateDistrictDetailsQuery);
+  res.send("District Details Updated");
+});
