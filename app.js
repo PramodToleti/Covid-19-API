@@ -184,3 +184,20 @@ app.get("/states/:stateId/stats/", async (req, res) => {
   const statsDetails = await db.all(getStatsOfStateQuery);
   res.send(...statsDetails);
 });
+
+//Get State Name of a District APi
+app.get("/districts/:districtId/details/", async (req, res) => {
+  const { districtId } = req.params;
+  const getStateNameQuery = `
+        SELECT 
+          state.state_name
+        FROM district 
+          INNER JOIN state 
+        ON district.state_id = state.state_id
+        WHERE 
+          district.district_id = ${districtId};
+    `;
+
+  const { state_name } = await db.get(getStateNameQuery);
+  res.send({ stateName: state_name });
+});
