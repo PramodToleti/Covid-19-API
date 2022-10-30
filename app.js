@@ -48,3 +48,26 @@ app.get("/states/", async (req, res) => {
   });
   res.send(stateDetails);
 });
+
+//Get State details API
+app.get("/states/:stateId/", async (req, res) => {
+  const { stateId } = req.params;
+  const getStateDetailsQuery = `
+        SELECT 
+          * 
+        FROM 
+          state 
+        WHERE 
+          state_id = ${stateId};
+    `;
+
+  const dbResponse = await db.get(getStateDetailsQuery);
+  const stateDetails = [dbResponse].map((obj) => {
+    return {
+      stateId: obj.state_id,
+      stateName: obj.state_name,
+      population: obj.population,
+    };
+  });
+  res.send(...stateDetails);
+});
